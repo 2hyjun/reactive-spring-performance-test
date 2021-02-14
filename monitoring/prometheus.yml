@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 1s # 1초 마다 Metric을 Pulling
+  evaluation_interval: 1s
+scrape_configs:
+  - job_name: 'blocking-spring'
+    metrics_path: '/actuator/prometheus' # Application prometheus endpoint
+    static_configs:
+      - targets: ['192.168.0.150:24895'] # Application host:port
+  - job_name: 'non-blocking-spring'
+    metrics_path: '/actuator/prometheus' # Application prometheus endpoint
+    static_configs:
+      - targets: [ '192.168.0.150:24995' ] # Application host:port

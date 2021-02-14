@@ -17,5 +17,11 @@ spring:
     url: jdbc:postgresql://localhost/reactive_spring
     username: admin
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+
 server:
   port: 24895

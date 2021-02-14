@@ -8,6 +8,9 @@ plugins {
 
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.5.4")
+
     implementation(project(":domain"))
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))

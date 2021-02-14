@@ -6,6 +6,11 @@ spring:
 server:
   port: 24995
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
 
 #logging:
 #  level:
