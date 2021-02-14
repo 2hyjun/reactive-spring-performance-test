@@ -18,10 +18,20 @@ spring:
     username: admin
 
 management:
+  metrics:
+    export:
+      prometheus:
+        enabled:
+          true
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: health, info, prometheus
+        include: "*"
 
 server:
   port: 24895

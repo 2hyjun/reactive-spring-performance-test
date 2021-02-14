@@ -7,10 +7,20 @@ server:
   port: 24995
 
 management:
+  metrics:
+    export:
+      prometheus:
+        enabled:
+          true
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: health, info, prometheus
+        include: "*"
 
 #logging:
 #  level:
