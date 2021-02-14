@@ -1,7 +1,6 @@
 package org.josh.blocking.interfaces.boundaries
 
 import org.josh.blocking.application.service.ProfessorCourseService
-import org.josh.blocking.interfaces.dto.ProfessorCoursesDto
 import org.josh.blocking.interfaces.dto.ProfessorCoursesDto2
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,5 +13,10 @@ class ProfessorRestController(
     @GetMapping("/professor/{id}")
     fun getProcessorAndCourses(@PathVariable id: Long): ProfessorCoursesDto2 {
         return professorCourseService.getCourse(id)
+    }
+
+    @GetMapping("/dummy")
+    fun dummy() {
+        Thread.sleep(2)
     }
 }
