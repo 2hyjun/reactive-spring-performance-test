@@ -5,6 +5,7 @@ import org.josh.nonblocking.application.ProfessorCourseService
 import org.josh.nonblocking.interfaces.dto.ProfessorCoursesDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 import java.time.Duration
@@ -19,12 +20,12 @@ class ProfessorRestController(
     }
 
     @GetMapping("/dummy/suspend")
-    suspend fun dummy() {
-        delay(2)
+    suspend fun dummy(@RequestParam delay: Long) {
+        delay(delay)
     }
 
     @GetMapping("/dummy/reactor")
-    fun dummyReactor(): Mono<Long> {
+    fun dummyReactor(@RequestParam delay: Long): Mono<Long> {
         return Mono.delay(Duration.ofMillis(2))
     }
 }

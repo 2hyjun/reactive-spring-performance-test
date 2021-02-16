@@ -4,6 +4,7 @@ import org.josh.blocking.application.service.ProfessorCourseService
 import org.josh.blocking.interfaces.dto.ProfessorCoursesDto2
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -16,7 +17,7 @@ class ProfessorRestController(
     }
 
     @GetMapping("/dummy")
-    fun dummy() {
-        Thread.sleep(2)
+    fun dummy(@RequestParam delay: Long) {
+        Thread.sleep(delay)
     }
 }
