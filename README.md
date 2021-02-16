@@ -36,7 +36,6 @@ Nested Loop  (cost=4.96..253.67 rows=450 width=14) (actual time=0.036..0.885 row
 Planning Time: 0.382 ms
 Execution Time: 0.955 ms
 ```
-원래는 모든 종류의 Entity를 받아오는 쿼리를 구성하려 했으나, R2DBC에서 아직 Relational Mapping을 지원하지 않는다. 그래서 공평하게 Flat한 Row들만 가져오도록 같은 쿼리로 구성했다.
 
 # Test Env
 | Device   | 2019 Macbook Pro 16"   |
