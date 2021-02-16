@@ -100,7 +100,7 @@ File Descriptors, Processors 리밋을 해제하여도 마찬가지였다.. R2DB
 
 Blocking, Non Blocking Application 모두 초기 기동할 떄 보다, 리퀘스트를 처리하기 시작한 후 1분후 쯤 메모리 사용량이 급격하게 낮아졌다. 그걸 감안해서 최초 리퀘스트 이후 2분부터 모니터링 하였음.
 
-같은 WebFlux안에서, Controller가 Reactor로 구현 돼 있는 지, Coroutine으로 구현 돼 있는 지가 어떤 차이를 만들어낼까 싶어서 해봤는데 리소스 사용에 관해서는 큰 차이는 없었고 TPS에서 차이가 났다. 같은 rate로 요청을 해도 `connection reset by peer` 에러를 뿜으면서 더 많이 죽었다.  
+같은 WebFlux안에서, Controller가 Reactor로 구현 돼 있는 지, Coroutine으로 구현돼 있는지가 어떤 차이를 만들어낼까 싶어서 해봤는데 리소스 사용에 관해서는 큰 차이는 없었고 TPS에서 차이가 났다. 같은 rate로 요청을 해도 `connection reset by peer` 에러를 뿜으면서 더 많이 죽었다.  
 
-JDBC를 쓰지 않고 순전히 WebFlux vs MVC를 비교했을 때, 사실 성능차이는 크게 나지 않았다. 부하를 30%정도 더 적게먹는다.
+JDBC를 쓰지 않고 순전히 WebFlux vs MVC를 비교했을 때, 사실 성능 차이는 크게 나지 않았다. 부하를 30%정도 더 적게 먹는다.
 여기서 rate을 올려가면서 최대 TPS 확인하면 좋을 것 같다.
