@@ -58,8 +58,9 @@ Run Non Blocking Spring Application (Port: 24995)
 ```
 Blocking (JDBC + Web MVC) 프로젝트에 기본 Table 스키마 정의 + 시드 데이터를 넣어놓았다. `./gradlw :blocking:bootRun`을 먼저 실행하자.
 
-# Test Env
-`/professor/{id}` (ex `/professor/2`)
+---
+# 보수 공사 중!
+Servlet Thread 관련 [JVM Warnming Up](https://dzone.com/articles/why-many-java-performance-test) 반영 예정!
 
 ## Test #1 (500 rate for 3m)
 
