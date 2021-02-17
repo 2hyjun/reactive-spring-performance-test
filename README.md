@@ -59,27 +59,78 @@ Run Non Blocking Spring Application (Port: 24995)
 Blocking (JDBC + Web MVC) 프로젝트에 기본 Table 스키마 정의 + 시드 데이터를 넣어놓았다. `./gradlw :blocking:bootRun`을 먼저 실행하자.
 
 ---
-# 보수 공사 중!
-Servlet Thread 관련 [JVM Warnming Up](https://dzone.com/articles/why-many-java-performance-test) 반영 예정!
+# JVM Warming Up
+JVM에서 application 기동 시 초기부터 최고의 퍼포먼스를 보여주는 것이 아닌 [워밍업할 시간이 필요하다](https://dzone.com/articles/why-many-java-performance-test)는 글을 보았다.
+꽤 오래된 글이기에, 지금도 그럴까? 싶어서 지켜봤더니, 메모리 사용량에서 그 현상이 나타났다.
 
-## Test #1 (500 rate for 3m)
+![./docs/jvm-warming-up-blocking.png](./docs/jvm-warming-up-blocking.png)
+![./docs/jvm-warming-up-non-blocking.png](./docs/jvm-warming-up-non-blocking.png)  
+(왼: Blocking Application, 오: Reactive Application)
 
-[Blocking Test Result](https://snapshot.raintank.io/dashboard/snapshot/iTQv5Qb2mPJ238nYwynz4TZs5mn9GqI0)  
-[Non Blocking Test Result](https://snapshot.raintank.io/dashboard/snapshot/oJSzmm8di6Lismr1IUEcmfvN6o5AKf58)
+이걸 반영해서, 양 측 모두 초기 기동 후 약 15분 가량 후 테스트를 진행했다.
 
-|                 | Blocking  | Non Blocking |
-|-----------------|-----------|--------------|
-| TPS             | 500       | 500          |
-| AVG Latency     | 6.12 ms   | 14.3 ms     |
-| Threads         | 213       | 39           |
-| Max Memory Used | 711 Mib | 1.02 GiB    |
-| AVG Cpu Usage   | 2.34%     | 6.95%       |
+## Test #1 (200 rate for 3m)
+|               | Blocking | Reactive |
+|---------------|----------|----------|
+| TPS           | 200      | 200      |
+| AVG Latency   | 4.868ms  | 7.102ms  |
+| AVG Used Heap | 177 MiB  | 118 MiB  |
+| AVG Cpu Usage | 1.21%    | 2.39%    |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/9kHo2JIXJIGI5LhVDmeA1hf0bkm5lZRY) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/hPNlifvoJkpY5b6QosJkgYi34K6dB5C1)|
 
-Non Blocking Spring이 시스템 리소스도 더 많이 먹는데, 더 느렸다.   
-Concurrency Rate을 올려보면 효과가 나올까? 싶었는데, 무슨 이유에서인지 Non Blocking은 TPS 600이상으로 올라가지 않았다.
-File Descriptors, Processors 리밋을 해제하여도 마찬가지였다.. R2DBC Driver 성능의 한계인가?
+## Test #2 (400 rate for 3m)
+|               | Blocking | Reactive |
+|---------------|----------|----------|
+| TPS           | 399.99   | 399.98   |
+| AVG Latency   | 4.732ms  | 9.682ms  |
+| AVG Used Heap | 162 MiB  | 134 MiB  |
+| AVG Cpu Usage | 2.07%    | 4.65%    |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/fFxF5D5eJFmDb9RFt7tf16LWAIKMhD3P) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/yX3tAxm7ybtfU3wT4Ea8ufOE2K0HiIcJ)|
 
-## Test #2 (without DB Connection, 7500 rate for 1m)
+## Test #3 (600 rate for 3m)
+|               | Blocking | Reactive  |
+|---------------|----------|-----------|
+| TPS           | 599.99   | 599.81    |
+| AVG Latency   | 5.021ms  | 232.857ms |
+| AVG Used Heap | 153 MiB  | 153 MiB   |
+| AVG Cpu Usage | 2.50%    | 5.96%     |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/Dp3BAg6jaC5stjQCv5mLG2oit8G4fRZK) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/Y3uGsXk5sDjWLAZN1dbLJ7fUUctLKcO0)|
+
+## Test #4 (800 rate for 3m)
+(800 rate부터 기본 thread pool size로 동작하지 않아, max size 90으로 늘렸다..)
+|               | Blocking | Reactive |
+|---------------|----------|----------|
+| TPS           | 800.00   | 799.99   |
+| AVG Latency   | 5.11ms   | 7.903ms  |
+| AVG Used Heap | 162 MiB  | 703 MiB  |
+| AVG Cpu Usage | 3.19%    | 10.63%   |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/I2WLT5WqueTHkzQ13q9pRc8IJ9kjVieG) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/SEePPMPFV4q7XYqbr1VRGNJp2BJcjx74)|
+
+## Test #5 (1000 rate for 3m)
+|               | Blocking | Reactive |
+|---------------|----------|----------|
+| TPS           | 999.95   | 999.98   |
+| AVG Latency   | 5.51ms   | 9.44ms   |
+| AVG Used Heap | 160 MiB  | 1.02 GiB |
+| AVG Cpu Usage | 4.70%    | 10.78%   |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/wE2fdly1uWb6Yl5BXbU6IrJWTX5lhqhQ) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/4UJdkeHIGne7bRJ5jacmWYF93pSHsNdj)|
+
+## Test #6 (1500 rate for 3m)
+|               | Blocking | Reactive |
+|---------------|----------|----------|
+| TPS           | 1499.95  | 1499.68  |
+| AVG Latency   | 6.671ms  | 26.479ms |
+| AVG Used Heap | 179 MiB  | 1.24 GiB |
+| AVG Cpu Usage | 7.33%    | 26.09%   |
+| Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/XT1f3QoVkrYRg4cQc24LN0mWKtfE5Rh5) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/cKZz8SWHQSOtj6lwE1JBx7VzVMsCK5lA)|
+
+흠.. 테스트 환경이 무엇이 잘못되었을까?  
+1. r2dbc의 pool size를 늘리는 것이 아니라 webflux worker thread 수를 늘려야 하나?
+2. 단일 application이 아니라 여러 application을 띄워서 효율을 늘려야 하나?
+
+일단 잘 모르겠다.
+
+## Test #7 (without DB Connection, 7500 rate for 1m)
 예제를 만들면서 느낀 것은, R2DBC 상에서는 Table 간 관계를 표현하는 것이 아직 지원이 되지 않다보니, 실무에서 사용하기에는 이르다고 느꼈다.
 그럼 그냥 JDBC, R2DBC를 제외한 MVC vs WebFlux 간 성능만 측정해보자!
 
@@ -105,3 +156,9 @@ Blocking, Non Blocking Application 모두 초기 기동할 떄 보다, 리퀘스
 
 JDBC를 쓰지 않고 순전히 WebFlux vs MVC를 비교했을 때, 사실 성능 차이는 크게 나지 않았다. 부하를 30%정도 더 적게 먹는다.
 여기서 rate을 올려가면서 최대 TPS 확인하면 좋을 것 같다.
+
+
+# 뼈 맞음
+https://github.com/spring-projects/spring-data-r2dbc/issues/203
+위 이슈에서, r2dbc member가 reactive pattern을 적용하는 주 이유는 속도/성능이 아닌 확장성과 회복력이라고 강조한다.  
+나는 쉐도우 복싱을 한 걸까 
