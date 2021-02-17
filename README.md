@@ -104,7 +104,7 @@ JVM에서 application 기동 시 초기부터 최고의 퍼포먼스를 보여�
 | Grafana Snapshot | [Blocking](https://snapshot.raintank.io/dashboard/snapshot/Dp3BAg6jaC5stjQCv5mLG2oit8G4fRZK) | [Non Blocking](https://snapshot.raintank.io/dashboard/snapshot/Y3uGsXk5sDjWLAZN1dbLJ7fUUctLKcO0)|
 
 ## Test #4 (800 rate for 3m)
-(800 rate부터 기본 thread pool size로 동작하지 않아, max size 90으로 늘렸다..)
+(800 rate부터 기본 r2dbc thread pool size로 동작하지 않아, max size 90으로 늘렸다..)
 |               | Blocking | Reactive |
 |---------------|----------|----------|
 | TPS           | 800.00   | 799.99   |
