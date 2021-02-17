@@ -1,3 +1,10 @@
+# (Update 02.18) 뼈 맞음
+https://github.com/spring-projects/spring-data-r2dbc/issues/203
+위 이슈에서, r2dbc member가 reactive pattern을 적용하는 주 이유는 속도/성능이 아닌 확장성과 회복력이라고 강조한다.  
+나는 쉐도우 복싱을 한 걸까..
+
+---
+
 # 과연 Reactive 한 친구들이 정말 빠를까?
 `JDBC` + `Spring Web MVC` "**Blocking**" vs `R2DBC` + `WebFlux` "**Non-Blocking / Reactive**"  
 Reactive한 Spring이 얼마나 빠른지 궁금해서 실험을 해보았다.
@@ -156,9 +163,3 @@ Blocking, Non Blocking Application 모두 초기 기동할 떄 보다, 리퀘스
 
 JDBC를 쓰지 않고 순전히 WebFlux vs MVC를 비교했을 때, 사실 성능 차이는 크게 나지 않았다. 부하를 30%정도 더 적게 먹는다.
 여기서 rate을 올려가면서 최대 TPS 확인하면 좋을 것 같다.
-
-
-# 뼈 맞음
-https://github.com/spring-projects/spring-data-r2dbc/issues/203
-위 이슈에서, r2dbc member가 reactive pattern을 적용하는 주 이유는 속도/성능이 아닌 확장성과 회복력이라고 강조한다.  
-나는 쉐도우 복싱을 한 걸까 
